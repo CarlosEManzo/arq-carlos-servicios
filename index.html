@@ -19,6 +19,10 @@ p.lead{color:var(--mut);font-size:1.15rem;max-width:620px}
 .card ul{padding-left:18px;color:var(--mut);margin:8px 0 0}
 h2{margin:48px 0 0}ol{color:var(--mut)}
 footer{padding:48px 0;color:var(--mut);border-top:1px solid var(--line);margin-top:48px}
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0}
+.contact a{color:var(--ink);text-decoration:none}
+.contact div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.contact small{display:block;color:var(--mut)}
 </style>
 </head>
 <body>
@@ -40,7 +44,16 @@ footer{padding:48px 0;color:var(--mut);border-top:1px solid var(--line);margin-t
 <h2>Cómo trabajamos</h2>
 <ol><li>Me cuentas tu proyecto por WhatsApp.</li><li>Recibes cotización y tiempos en 24 horas.</li><li>Anticipo del 50 % para iniciar.</li><li>Entrega y saldo restante.</li></ol>
 
-<footer>Arq. Carlos Espinoza · México · <a href="https://wa.me/523512025030" style="color:var(--acc)">WhatsApp</a></footer>
+<h2>Contacto directo</h2>
+<div class="contact">
+<div><small>WhatsApp y llamadas</small><a href="https://wa.me/523512025030">+52 351 202 5030</a></div>
+<div><small>Correo</small><a href="mailto:arqcarlosem@gmail.com">arqcarlosem@gmail.com</a></div>
+<div><small>Ubicación</small>Morelia, Michoacán · proyectos en todo México</div>
+<div><small>Portafolio</small><a href="https://arq-carlos-espinoza.vercel.app">arq-carlos-espinoza.vercel.app</a></div>
+</div>
+<p style="color:var(--mut)">Horario de atención: lunes a sábado, 9:00 a 19:00 h.</p>
+
+<footer>Arq. Carlos Espinoza · Morelia, Michoacán, México</footer>
 </div>
 </body>
 </html>
