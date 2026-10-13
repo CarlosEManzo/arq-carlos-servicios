@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Carlos Espinoza | Renders, BIM y planos en Morelia</title>
-<meta name="description" content="Arquitecto en Morelia: renders, modelos BIM, planos, presupuestos y recorridos virtuales para tu proyecto. Cotización sin costo en 24 horas.">
-<meta property="og:title" content="Carlos Espinoza | Renders, BIM y planos">
-<meta property="og:description" content="Renders, BIM, planos y presupuestos desde Morelia. Cotización en 24 horas.">
-<meta property="og:image" content="https://arq-carlos-servicios.vercel.app/img/d-render.jpg">
+<title>Tablero de control de obra | Carlos Espinoza</title>
+<meta name="description" content="Tablero de control de obra: avance físico y avance financiero en un solo lugar, desde el celular. Implementación desde $8,000 MXN. Morelia, Michoacán.">
+<meta property="og:title" content="Tablero de control de obra | Carlos Espinoza">
+<meta property="og:description" content="Sepa el avance y el gasto de cada obra en un solo tablero, desde el celular.">
+<meta property="og:image" content="https://arq-carlos-servicios.vercel.app/img/d-4d5d.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap">
 <style>
@@ -25,26 +25,25 @@ a{color:inherit}h1,h2,h3,p{margin:0}img{max-width:100%;display:block}
 .btn:hover{background:var(--accent);color:var(--bg-dark)}
 .btn.ghost{border-color:var(--border-color)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-header{padding:72px 0 48px}
-h1{font-size:clamp(34px,7.2vw,92px);font-weight:800;letter-spacing:-.03em;line-height:.96;text-transform:uppercase;text-wrap:balance;margin:14px 0 20px}
-.lead{color:var(--text-muted);max-width:560px;font-size:18px}
+header{padding:72px 0 40px}
+h1{font-size:clamp(34px,7.2vw,88px);font-weight:800;letter-spacing:-.03em;line-height:.96;text-transform:uppercase;text-wrap:balance;margin:14px 0 20px}
+.lead{color:var(--text-muted);max-width:580px;font-size:18px}
 .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 .sec-t{display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-bottom:1px solid var(--border-color);padding-bottom:10px;margin:64px 0 24px}
 .sec-t h2{font-size:clamp(26px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1;text-transform:uppercase}
+.hero-img{border:1px solid var(--border-color);border-radius:var(--r);overflow:hidden;background:var(--card-bg)}
+.hero-img p{padding:12px 16px;color:var(--text-muted);font-size:14px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
-.card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:8px}
-.card h3{font-size:20px;font-weight:800;letter-spacing:-.02em;text-transform:uppercase}
-.price{font-family:var(--mono);font-size:22px;color:var(--accent)}
-.card ul{margin:4px 0 0;padding-left:18px;color:var(--text-muted);font-size:14px}
-.proj{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.p{background:var(--card-bg);border:1px solid var(--border-color);border-radius:var(--r);overflow:hidden;transition:border-color .6s var(--ease)}
-.p:hover{border-color:var(--text-muted)}
+.p{background:var(--card-bg);border:1px solid var(--border-color);border-radius:var(--r);overflow:hidden}
 .p img{width:100%;aspect-ratio:4/3;object-fit:cover}
 .p div{padding:14px 16px 18px}
 .p h3{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin:4px 0 2px}
 .p p{color:var(--text-muted);font-size:14px}
-.p.txt{padding:18px;display:flex;flex-direction:column;justify-content:center;gap:6px}
-.p.txt div{padding:0}
+.card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:8px}
+.card h3{font-size:20px;font-weight:800;letter-spacing:-.02em;text-transform:uppercase}
+.price{font-family:var(--mono);font-size:26px;color:var(--accent)}
+.card ul{margin:4px 0 0;padding-left:18px;color:var(--text-muted);font-size:14px}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--border-color);border-radius:20px;padding:3px 10px;color:var(--text-muted)}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
 .steps div{border:1px solid var(--border-color);border-radius:var(--r);padding:18px;background:rgba(255,255,255,.015)}
 .steps b{display:block;font-family:var(--mono);font-size:12px;color:var(--text-muted);margin-bottom:6px}
@@ -59,40 +58,38 @@ footer{margin:64px 0 0;padding:32px 0 48px;border-top:1px solid var(--border-col
 <div class="w">
 
 <header>
-<span class="mono muted">Arquitecto · Morelia, Michoacán</span>
-<h1>Renders, BIM y planos que venden tu proyecto</h1>
-<p class="lead">Del modelo al presupuesto: imágenes, recorridos y planos claros para particulares, constructoras e inmobiliarias. Cotización sin costo en 24 horas.</p>
+<span class="mono muted">Control de obra · Morelia, Michoacán</span>
+<h1>Sepa el avance y el gasto de cada obra, en un solo tablero</h1>
+<p class="lead">Avance físico y avance financiero, semana a semana, consultables desde el celular. Sin hojas de cálculo dispersas ni llamadas para saber cómo va la obra.</p>
 <div class="cta">
-<a class="btn" href="https://wa.me/523512025030?text=Hola%2C%20quiero%20una%20cotizaci%C3%B3n%20para%20mi%20proyecto">Cotizar por WhatsApp</a>
-<a class="btn ghost" href="https://arq-carlos-espinoza.vercel.app">Ver portafolio completo</a>
+<a class="btn" href="https://wa.me/523512025030?text=Hola%2C%20quiero%20ver%20el%20tablero%20de%20control%20de%20obra">Pedir una revisión por WhatsApp</a>
+<a class="btn ghost" href="https://arq-carlos-espinoza.vercel.app/dashboard/">Ver demo en vivo</a>
 </div>
 </header>
 
-<div class="sec-t"><h2>Servicios</h2><span class="mono muted">Precios desde · MXN</span></div>
+<div class="hero-img"><img src="img/d-4d5d.jpg" alt="Calendario de obra por semanas con presupuesto ejercido" loading="lazy"><p>Calendario por fases con el avance real y el presupuesto ejercido. Datos de ejemplo del proyecto de demostración.</p></div>
+
+<div class="sec-t"><h2>Qué incluye el tablero</h2><span class="mono muted">Todo en un lugar</span></div>
 <div class="grid">
-<div class="card"><h3>Renders</h3><div class="price">$3,500</div><p class="muted">por vista, exterior o interior</p><ul><li>Fotorrealismo y ambientación</li><li>3–5 días</li><li>1 ronda de ajustes</li></ul></div>
-<div class="card"><h3>Modelo BIM y planos</h3><div class="price">$9,000</div><p class="muted">casa habitación hasta 150 m²</p><ul><li>Planos arquitectónicos en Revit</li><li>Levantamiento de lo existente</li><li>PDF y DWG</li></ul></div>
-<div class="card"><h3>Control de obra</h3><div class="price">$8,000</div><p class="muted">dashboard de seguimiento de tu obra</p><ul><li>Avance físico por partida (4D)</li><li>Avance financiero y costos (5D)</li><li>Todo en un tablero, desde el celular</li></ul><a class="mono" href="https://arq-carlos-espinoza.vercel.app/dashboard/" style="margin-top:6px">Ver demo →</a></div>
-<div class="card"><h3>Recorrido virtual</h3><div class="price">$6,000</div><p class="muted">video para redes y preventa</p><ul><li>Animación del proyecto</li><li>Formato vertical y horizontal</li><li>5–7 días</li></ul></div>
+<div class="p"><img src="img/d-4d5d.jpg" alt="Avance físico y financiero" loading="lazy"><div><span class="mono muted">4D · 5D</span><h3>Avance físico y financiero</h3><p>Qué se construyó cada semana y cuánto se ha gastado frente a lo programado.</p></div></div>
+<div class="p"><img src="img/d-3d.jpg" alt="Modelo 3D de la obra" loading="lazy"><div><span class="mono muted">3D</span><h3>Modelo de la obra</h3><p>La casa o el edificio en 3D, con sus instalaciones, para ubicar cada partida.</p></div></div>
+<div class="p"><img src="img/d-2d.jpg" alt="Planos técnicos" loading="lazy"><div><span class="mono muted">2D</span><h3>Planos a la mano</h3><p>Plantas, cortes y láminas consultables desde el mismo tablero.</p></div></div>
+<div class="p"><img src="img/d-360.jpg" alt="Recorrido 360" loading="lazy"><div><span class="mono muted">360°</span><h3>Recorrido virtual</h3><p>Entre al espacio desde el celular y revise cómo va o cómo quedará.</p></div></div>
 </div>
 
-<div class="sec-t"><h2>Un proyecto, por partes</h2><span class="mono muted">Dashboard · Loft 6 × 15</span></div>
-<p class="muted" style="max-width:620px;margin-bottom:20px">Así se ve una vivienda de 52 m² explicada en el tablero: cada parte es un servicio que puedes contratar por separado o completo.</p>
-<div class="proj">
-<div class="p"><img src="img/d-2d.jpg" alt="Láminas técnicas del loft: planta baja, planta tapanco, corte A-A y alzado frontal" loading="lazy"><div><span class="mono muted">2D · Planos</span><h3>Planos técnicos</h3><p>Plantas, cortes y alzados que salen del modelo en Revit.</p></div></div>
-<div class="p"><img src="img/d-3d.jpg" alt="Maqueta axonométrica del loft" loading="lazy"><div><span class="mono muted">3D · Modelo BIM</span><h3>Modelo con instalaciones</h3><p>La casa completa en 3D, con sus redes hidráulicas y eléctricas.</p></div></div>
-<div class="p"><img src="img/d-4d5d.jpg" alt="Calendario de obra y presupuesto ejercido" loading="lazy"><div><span class="mono muted">4D · 5D · Control de obra</span><h3>Avance físico y financiero</h3><p>Semana a semana: qué se construyó y cuánto se ha gastado.</p></div></div>
-<div class="p"><img src="img/d-360.jpg" alt="Recorrido 360 de la sala" loading="lazy"><div><span class="mono muted">360° · Recorrido</span><h3>Recorrido virtual</h3><p>Entra al espacio antes de construirlo, desde el celular.</p></div></div>
-<div class="p"><img src="img/d-render.jpg" alt="Render de la sala" loading="lazy"><div><span class="mono muted">Renders</span><h3>Imágenes fotorrealistas</h3><p>Para vender o validar la propuesta con tu cliente.</p></div></div>
-<a class="p txt" href="https://arq-carlos-espinoza.vercel.app/dashboard/" style="text-decoration:none"><div><span class="mono muted">Demo en vivo</span><h3>Abrir el dashboard →</h3><p>Explóralo completo: planos, 3D, obra, costos y 360°.</p></div></a>
+<div class="sec-t"><h2>Precio</h2><span class="mono muted">MXN · antes de IVA</span></div>
+<div class="grid">
+<div class="card"><span class="tag">Implementación</span><h3>Su obra en el tablero</h3><div class="price">$8,000</div><p class="muted">precio de lanzamiento · lista $9,500</p><ul><li>Carga de partidas, presupuesto y calendario</li><li>Dominio propio el primer año</li><li>1 hora de capacitación</li></ul></div>
+<div class="card"><span class="tag">Mensualidad</span><h3>Alojamiento y soporte</h3><div class="price">$1,200</div><p class="muted">por mes</p><ul><li>Alojamiento y respaldo</li><li>Soporte y cambios menores</li><li>Actualizaciones del tablero</li></ul></div>
+<div class="card"><span class="tag">Opcional</span><h3>Seguimiento semanal</h3><div class="price">+$2,500</div><p class="muted">por mes</p><ul><li>Capturamos el avance de la obra</li><li>Reporte semanal listo para su cliente</li><li>Sin que usted tenga que capturar</li></ul></div>
 </div>
 
 <div class="sec-t"><h2>Cómo trabajamos</h2></div>
 <div class="steps">
-<div><b>01</b>Me cuentas tu proyecto por WhatsApp.</div>
-<div><b>02</b>Cotización y tiempos en 24 horas.</div>
-<div><b>03</b>Anticipo del 50 % para iniciar.</div>
-<div><b>04</b>Entrega y saldo restante.</div>
+<div><b>01</b>Me comparte una obra en curso (aunque sea en Excel).</div>
+<div><b>02</b>Monto el tablero con sus datos y lo revisamos juntos.</div>
+<div><b>03</b>Si le sirve, anticipo del 50 % y queda en operación.</div>
+<div><b>04</b>Soporte mensual y, si lo desea, seguimiento semanal.</div>
 </div>
 
 <div class="sec-t"><h2>Hablemos</h2></div>
@@ -100,7 +97,7 @@ footer{margin:64px 0 0;padding:32px 0 48px;border-top:1px solid var(--border-col
 <div><small class="mono muted">WhatsApp y llamadas</small><a href="https://wa.me/523512025030">+52 351 202 5030</a></div>
 <div><small class="mono muted">Correo</small><a href="mailto:arqcarlosem@gmail.com">arqcarlosem@gmail.com</a></div>
 <div><small class="mono muted">Ubicación</small>Morelia, Michoacán · todo México</div>
-<div><small class="mono muted">Portafolio</small><a href="https://arq-carlos-espinoza.vercel.app">arq-carlos-espinoza.vercel.app</a></div>
+<div><small class="mono muted">Demo</small><a href="https://arq-carlos-espinoza.vercel.app/dashboard/">arq-carlos-espinoza.vercel.app/dashboard</a></div>
 </div>
 
 <footer class="mono">Carlos Francisco Espinoza Manzo · Arquitecto · Morelia, Michoacán</footer>
