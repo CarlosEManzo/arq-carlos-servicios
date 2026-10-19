@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tablero de avance de obra | Demo</title>
+<meta name="description" content="Tablero de avance físico y financiero de obra, alimentado por una hoja de Google Sheets o un CSV.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0D0D0D;--card:#1A1A1A;--line:#2A2A2A;--mut:#888;--txt:#E6E6E6;--ok:#6fcf97;--warn:#f2c94c;--bad:#eb5757;--acc:#fff;--r:14px;--g:16px}
+@media(min-width:760px){:root{--g:32px}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 Inter,Arial,sans-serif;background-image:radial-gradient(circle,rgba(255,255,255,.035) 1px,transparent 1px);background-size:24px 24px}
+.w{max-width:1180px;margin:0 auto;padding:0 var(--g) 64px}
+h1,h2,h3,p{margin:0}
+.m{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+header{padding:36px 0 18px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end}
+h1{font-size:clamp(26px,4.4vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1;text-transform:uppercase}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn,select,input[type=number]{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:transparent;border:1px solid var(--line);color:var(--txt);padding:9px 12px;border-radius:10px;cursor:pointer;min-height:38px}
+input[type=number]{width:80px;text-transform:none}
+.btn:hover{background:#fff;color:#0D0D0D}
+.grid{display:grid;gap:12px}
+.k4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.kpi b{display:block;font:700 28px 'Space Mono',monospace;margin-top:4px}
+.kpi small{color:var(--mut)}
+.bar{height:8px;border-radius:5px;background:#2a2a2a;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:var(--txt)}
+.sec{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px;margin:34px 0 14px}
+.sec h2{font-size:clamp(18px,2.6vw,26px);font-weight:800;text-transform:uppercase;letter-spacing:-.02em}
+svg{width:100%;height:auto;display:block}
+.g-row{display:grid;grid-template-columns:minmax(120px,230px) 1fr 54px;gap:10px;align-items:center;padding:5px 0;border-bottom:1px solid #1f1f1f;font-size:13px}
+.g-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-track{position:relative;height:16px;background:#202020;border-radius:5px;overflow:hidden}
+.g-plan{position:absolute;top:0;bottom:0;background:#3a3a3a;border-radius:5px}
+.g-real{position:absolute;top:4px;bottom:4px;background:var(--txt);border-radius:3px}
+.g-now{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--warn)}
+.pct{font-family:'Space Mono',monospace;text-align:right}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--mut);font-weight:500}td.n,th.n{text-align:right;font-family:'Space Mono',monospace}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;border:1px solid var(--line)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.hint{color:var(--mut);font-size:13px;max-width:760px}
+details{border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin-top:10px;background:rgba(255,255,255,.015)}
+summary{cursor:pointer;font-weight:700}
+code{font-family:'Space Mono',monospace;font-size:12px;background:#222;padding:1px 5px;border-radius:4px;word-break:break-all}
+#msg{margin-top:10px}
+@media print{body{background:#fff;color:#000}.card,details{border-color:#ccc;background:#fff}.ctl,details,#msg{display:none}.g-track{background:#eee}.g-plan{background:#bbb}.g-real{background:#000}.kpi small,.m,th{color:#555}}
+</style>
+</head>
+<body>
+<div class="w">
+<header>
+  <div><span class="m" id="sub">Demo · datos de ejemplo</span><h1 id="titulo">Tablero de avance de obra</h1></div>
+  <div class="ctl">
+    <label class="m">Semana actual <input id="sem" type="number" min="1" step="1"></label>
+    <button class="btn" id="bcsv">Cargar CSV</button>
+    <button class="btn" id="bpl">Plantilla</button>
+    <button class="btn" id="bpr">Imprimir reporte</button>
+    <input id="file" type="file" accept=".csv,text/csv" hidden>
+  </div>
+</header>
+<p id="msg" class="hint"></p>
+
+<div class="grid k4" id="kpis"></div>
+
+<div class="sec"><h2>Curva S</h2><span class="m">Programado vs real</span></div>
+<div class="card"><div id="curva"></div></div>
+
+<div class="sec"><h2>Programa por partida</h2><span class="m">Barra clara: real · gris: programado · línea amarilla: hoy</span></div>
+<div class="card" id="gantt"></div>
+
+<div class="sec"><h2>Avance por capítulo</h2></div>
+<div class="grid k4" id="caps"></div>
+
+<div class="sec"><h2>Partidas con atraso</h2><span class="m">Más de 10 puntos bajo lo programado</span></div>
+<div class="card"><table id="atr"></table></div>
+
+<div class="sec"><h2>Cómo usar con tu obra</h2></div>
+<details><summary>Conectar una hoja de Google Sheets</summary>
+<p class="hint" style="margin-top:8px">1) Copia la plantilla (botón Plantilla) a una hoja de Google. 2) Llena tus partidas y actualiza la columna <code>avance_pct</code> cada semana. 3) Archivo → Compartir → Publicar en la web → formato CSV. 4) Abre este tablero con <code>?src=URL_DEL_CSV&amp;obra=Nombre&amp;sem=12</code>. Cada vez que actualizas la hoja, el tablero se actualiza solo.</p></details>
+<details><summary>Columnas del CSV</summary>
+<p class="hint" style="margin-top:8px"><code>capitulo, concepto, unidad, cantidad, pu, sem_ini, sem_fin, avance_pct, pagado</code>. El importe es cantidad × pu. <code>avance_pct</code> es el avance físico acumulado (0 a 100). <code>pagado</code> es opcional: si lo omites, se usa importe × avance.</p></details>
+<p class="m" style="margin-top:28px">Carlos Espinoza · Arquitecto · Morelia, Michoacán · WhatsApp +52 351 202 5030</p>
+</div>
+
+<script>
+const DEMO=`capitulo,concepto,unidad,cantidad,pu,sem_ini,sem_fin,avance_pct,pagado
+Preliminares,Trazo y nivelación,m2,120,35,1,2,100,4200
+Cimentación,Excavación y cepas,m3,48,310,2,4,100,14880
+Cimentación,Zapatas y contratrabes,m3,22,4800,3,7,100,105600
+Estructura,Columnas y trabes,m3,36,6200,7,12,80,201000
+Estructura,Losa de entrepiso,m2,95,1480,10,14,45,70300
+Muros,Muros de block,m2,260,450,11,16,30,35100
+Instalaciones,Hidrosanitaria,ml,180,165,12,20,15,8900
+Instalaciones,Eléctrica y datos,ml,320,95,13,21,10,3040
+Acabados,Aplanados y yeso,m2,520,185,17,22,0,0
+Acabados,Pisos y recubrimientos,m2,150,720,19,24,0,0
+Acabados,Carpintería y herrería,pza,28,3900,21,25,0,0
+Exteriores,Limpieza y entrega,lote,1,18000,25,26,0,0`;
+let rows=[],sem=12,total=0,W=26;
+const $=s=>document.querySelector(s);
+const fmt=n=>'$'+Math.round(n).toLocaleString('es-MX');
+const pc=n=>(Math.round(n*10)/10).toFixed(1)+'%';
+function parseCSV(t){
+  t=t.replace(/^﻿/,'').trim();
+  const first=t.split(/\r?\n/)[0];
+  const d=(first.split(';').length>first.split(',').length)?';':',';
+  const out=[];let row=[],cell='',q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){if(c=='"'&&t[i+1]=='"'){cell+='"';i++}else if(c=='"')q=false;else cell+=c}
+    else if(c=='"')q=true;
+    else if(c==d){row.push(cell);cell=''}
+    else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(cell);out.push(row);row=[];cell=''}
+    else cell+=c}
+  row.push(cell);out.push(row);
+  return {h:out[0].map(x=>x.trim().toLowerCase()),r:out.slice(1).filter(r=>r.some(x=>x.trim()!==''))}
+}
+const num=v=>{if(v==null)return 0;v=String(v).replace(/[$\s]/g,'');if(v.includes(',')&&!v.includes('.'))v=v.replace(',','.');else v=v.replace(/,/g,'');const n=parseFloat(v);return isNaN(n)?0:n};
+function load(text){
+  const p=parseCSV(text);const ix=k=>p.h.indexOf(k);
+  const need=['capitulo','concepto','cantidad','pu','sem_ini','sem_fin','avance_pct'];
+  const miss=need.filter(k=>ix(k)<0);
+  if(miss.length){$('#msg').innerHTML='<span class="bad">Faltan columnas en el CSV: '+miss.join(', ')+'</span>';return false}
+  rows=p.r.map(r=>{const q=num(r[ix('cantidad')]),pu=num(r[ix('pu')]),imp=q*pu,av=Math.min(100,Math.max(0,num(r[ix('avance_pct')])));
+    const pg=ix('pagado')>=0&&String(r[ix('pagado')]).trim()!==''?num(r[ix('pagado')]):imp*av/100;
+    return {cap:r[ix('capitulo')],con:r[ix('concepto')],u:ix('unidad')>=0?r[ix('unidad')]:'',q,pu,imp,ini:num(r[ix('sem_ini')]),fin:Math.max(num(r[ix('sem_fin')]),num(r[ix('sem_ini')])),av,pg}});
+  total=rows.reduce((a,x)=>a+x.imp,0);W=Math.max(...rows.map(x=>x.fin),1);
+  return true}
+const plan=(x,w)=>Math.min(1,Math.max(0,(w-x.ini+1)/(x.fin-x.ini+1)));
+const planTot=w=>rows.reduce((a,x)=>a+x.imp*plan(x,w),0)/total;
+function render(){
+  if(!rows.length||!total)return;
+  const pFis=rows.reduce((a,x)=>a+x.imp*x.av/100,0)/total*100;
+  const pPlan=planTot(sem)*100, dev=pFis-pPlan;
+  const ejer=rows.reduce((a,x)=>a+x.pg,0), progImp=pPlan/100*total;
+  const dvc=dev>=-2?'ok':dev>=-8?'warn':'bad';
+  $('#kpis').innerHTML=
+   `<div class="card kpi"><span class="m">Presupuesto total</span><b>${fmt(total)}</b><small>${rows.length} partidas · ${W} semanas</small></div>`+
+   `<div class="card kpi"><span class="m">Avance físico</span><b>${pc(pFis)}</b><small>Programado a la semana ${sem}: ${pc(pPlan)}</small><div class="bar"><i style="width:${pFis}%"></i></div></div>`+
+   `<div class="card kpi"><span class="m">Desviación</span><b class="${dvc}">${dev>=0?'+':''}${pc(dev)}</b><small>${dev>=-2?'En tiempo':dev>=-8?'Atención':'Atrasada'} frente al programa</small></div>`+
+   `<div class="card kpi"><span class="m">Avance financiero</span><b>${fmt(ejer)}</b><small>${pc(ejer/total*100)} del total · programado ${fmt(progImp)}</small><div class="bar"><i style="width:${ejer/total*100}%"></i></div></div>`+
+   `<div class="card kpi"><span class="m">Por ejercer</span><b>${fmt(total-ejer)}</b><small>Semana ${sem} de ${W}</small></div>`;
+  // curva S
+  const Wd=900,H=300,pl=48,pb=28,pt=12,pr=14,iw=Wd-pl-pr,ih=H-pt-pb;
+  const X=w=>pl+iw*w/W,Y=v=>pt+ih*(1-v/100);
+  let pts='',grid='';
+  for(let w=0;w<=W;w++)pts+=(w?'L':'M')+X(w).toFixed(1)+' '+Y(planTot(w)*100).toFixed(1);
+  for(let v=0;v<=100;v+=25)grid+=`<line x1="${pl}" x2="${Wd-pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="#2a2a2a"/><text x="${pl-8}" y="${Y(v)+4}" fill="#888" font-size="11" text-anchor="end" font-family="Space Mono">${v}%</text>`;
+  for(let w=0;w<=W;w+=Math.ceil(W/13))grid+=`<text x="${X(w)}" y="${H-8}" fill="#888" font-size="11" text-anchor="middle" font-family="Space Mono">${w}</text>`;
+  $('#curva').innerHTML=`<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Curva S">${grid}<path d="${pts}" fill="none" stroke="#666" stroke-width="2.5"/><line x1="${X(sem)}" x2="${X(sem)}" y1="${pt}" y2="${H-pb}" stroke="#f2c94c" stroke-dasharray="4 4"/><circle cx="${X(sem)}" cy="${Y(pFis)}" r="6" fill="#fff"/><circle cx="${X(sem)}" cy="${Y(pPlan)}" r="4" fill="#666"/><text x="${X(sem)+10}" y="${Y(pFis)-8}" fill="#fff" font-size="12" font-family="Space Mono">real ${pc(pFis)}</text></svg>`;
+  // gantt
+  $('#gantt').innerHTML=rows.map(x=>{
+    const l=(x.ini-1)/W*100,w=(x.fin-x.ini+1)/W*100,now=(sem-0.5)/W*100;
+    return `<div class="g-row"><div class="g-name" title="${x.cap} · ${x.con}">${x.con}</div><div class="g-track"><div class="g-plan" style="left:${l}%;width:${w}%"></div><div class="g-real" style="left:${l}%;width:${w*x.av/100}%"></div><div class="g-now" style="left:${now}%"></div></div><div class="pct">${Math.round(x.av)}%</div></div>`}).join('');
+  // capitulos
+  const caps={};rows.forEach(x=>{(caps[x.cap]=caps[x.cap]||{imp:0,ej:0,pl:0}).imp+=x.imp;caps[x.cap].ej+=x.imp*x.av/100;caps[x.cap].pl+=x.imp*plan(x,sem)});
+  $('#caps').innerHTML=Object.entries(caps).map(([n,c])=>{const a=c.ej/c.imp*100,p=c.pl/c.imp*100;return `<div class="card"><span class="m">${n}</span><b style="display:block;font:700 22px 'Space Mono',monospace;margin-top:4px">${pc(a)}</b><small style="color:#888">Programado ${pc(p)} · ${fmt(c.imp)}</small><div class="bar"><i style="width:${a}%"></i></div></div>`}).join('');
+  // atrasos
+  const at=rows.map(x=>({x,d:x.av-plan(x,sem)*100})).filter(o=>o.d<-10).sort((a,b)=>a.d-b.d);
+  $('#atr').innerHTML=at.length?`<tr><th>Partida</th><th>Capítulo</th><th class="n">Programado</th><th class="n">Real</th><th class="n">Atraso</th><th class="n">Importe</th></tr>`+at.map(o=>`<tr><td>${o.x.con}</td><td>${o.x.cap}</td><td class="n">${pc(plan(o.x,sem)*100)}</td><td class="n">${pc(o.x.av)}</td><td class="n bad">${pc(o.d)}</td><td class="n">${fmt(o.x.imp)}</td></tr>`).join(''):`<tr><td class="ok">Ninguna partida con atraso mayor a 10 puntos.</td></tr>`;
+}
+async function boot(){
+  const q=new URLSearchParams(location.search);
+  if(q.get('obra')){$('#titulo').textContent=q.get('obra');$('#sub').textContent='Avance de obra'}
+  let text=DEMO;
+  if(q.get('src')){try{const r=await fetch(q.get('src'));if(!r.ok)throw 0;text=await r.text()}catch(e){$('#msg').innerHTML='<span class="bad">No se pudo leer la hoja. Revisa que esté publicada como CSV. Se muestran datos de ejemplo.</span>'}}
+  if(!load(text))return;
+  sem=Math.max(1,parseInt(q.get('sem'))||Math.min(W,Math.round(W*0.46)));$('#sem').value=sem;$('#sem').max=W;
+  render()}
+$('#sem').addEventListener('input',e=>{sem=Math.max(1,Math.min(W,parseInt(e.target.value)||1));render()});
+$('#bcsv').onclick=()=>$('#file').click();
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{if(load(t)){$('#sub').textContent='CSV cargado: '+f.name;$('#sem').max=W;if(sem>W)sem=W;$('#sem').value=sem;render()}})};
+$('#bpl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+DEMO],{type:'text/csv'}));a.download='plantilla-tablero-obra.csv';a.click()};
+$('#bpr').onclick=()=>window.print();
+boot();
+</script>
+</body>
+</html>
